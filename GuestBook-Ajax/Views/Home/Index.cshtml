@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    <script>
+$(document).ready(function () {
+
+    getAllMessages();
+    let row = function (message) {
+        return "<div class='comment'><label style='font - size: 10pt'>" + message.User.Login + "</label><br />" +
+    "<p>" + message.Message + "</p><label>" + message.Date + "</label></div>";
+    };
+    function getAllMessages() {
+        $.ajax({
+            url: '@Url.Action("GetMessages", "Home")',
+            type: 'GET',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                let rows = "";
+                let messages = JSON.parse(response);
+                $.each(messages, function (index, message) {
+                    rows += row(message);
+                })
+                $("#messages").html(rows);
+            },
+            error: function (x, y, z) {
+                alert(x + '\n' + y + '\n' + z);
+            }
+        });
+    }
+    $("#commButton").on("click", function () {
+        let formData = new FormData();
+        formData.append("Message", $("#message").val());
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Comment", "Home")',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                alert(response);
+                resetForm();
+                getAllMessages();
+            },
+            error: function (x, y, z) {
+                alert(x + '\n' + y + '\n' + z);
+            }
+        });
+    });
+    function resetForm() {
+        $("#message").val("");
+}
+});
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+@if (Context.Session.GetInt32("Id") != null)
+{
+    <div class="header">
+        <h3>Guest Book</h3>
+        <a asp-area="" asp-controller="Home" asp-action="Logout">Log out</a>
+    </div>
+    <div class="body">
+        <div id="messages" style="display:flex; flex-direction: column; justify-content:center; align-items:center; width:800px">
+            
+        </div>
+        <div class="newComment">
+            <form >
+                <input type="text" name="comment" id="message" style="width:250px; height:350px" value="" autocomplete="off" required /><br /><br />
+                <a href="javascript:void(0)" class="button" id="commButton">Post</a>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="header">
+        <h3>Guest Book</h3>
+        <a asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
+    </div>
+    <div id="messages" class="body" style="flex-direction:column; justify-content:center; align-items:center">
+        
+    </div>
+}

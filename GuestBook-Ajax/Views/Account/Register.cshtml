@@ -1,0 +1,38 @@
+﻿@model GuestBook_Ajax.Models.RegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="header">
+    <h3>Guest Book</h3>
+</div>
+<div class="mainReg">
+    <form asp-action="Register" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div>
+            <label style="color:#2F4F4F" asp-for="Login"></label><br />
+            <input style="border-top:hidden; border-left:hidden" asp-for="Login" class="formControl" /><br />
+            <span style="font-size: 8pt" asp-validation-for="Login" class="text-danger"></span>
+        </div>
+        <div>
+            <label style="color:#2F4F4F" asp-for="Password"></label><br />
+            <input style="border-top:hidden; border-left:hidden" asp-for="Password" class="formControl" /><br />
+            <span style="font-size: 8pt" asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div>
+            <label style="color:#2F4F4F" asp-for="PasswordConfirm"></label><br />
+            <input style="border-top:hidden; border-left:hidden" asp-for="PasswordConfirm" class="formControl" /><br />
+            <span style="font-size: 8pt" asp-validation-for="PasswordConfirm" class="text-danger"></span>
+        </div>
+        <div style="margin-top: 15px; text-align:center">
+            <input type="submit" value="Sign In" class="button" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
