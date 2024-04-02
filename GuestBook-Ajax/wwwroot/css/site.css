@@ -36,6 +36,7 @@ a {
 }
 
 .button {
+    text-align:center;
     width: 200px;
     height: 25px;
     background-color: #F8F8FF;
@@ -70,5 +71,7 @@ a {
 
 .newComment {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
